@@ -1,0 +1,167 @@
+//-- Dependencies --//
+@import 'mixins';
+
+//-- Colors --//
+$bg-rgba-color: rgba(29, 41, 57, 1);
+$sin-rgba-color: rgba(238, 100, 86, 1);
+$cos-rgba-color: rgba(209, 220, 72, 1);
+$circ-rgba-color: rgba(28, 175, 154, 1);
+$angle-rgba-color: rgba(21, 87, 100, 0.4);
+
+//-- Units --//
+$unit-points: 1em;
+$diameter: 50vh;
+$radius: ($diameter / 2);  // Radius of unit 1 = 25vh
+$factor: $radius + 1;
+$circle-unit: ($radius / 4);
+
+//-- Keyframe animation steps --//
+$steps: (36);
+$angle-step: (12);
+$pi-deg-steps: (50);
+$bezier: .21,.86,.83,.67;
+
+//-- Functions --//
+@function angle-runner($j, $runner) {
+  $run-steps: $steps;
+  $y-coordinate: sin($j * 10deg) * $radius;
+  $x-coordinate: cos($j * 10deg) * $radius;
+
+  $output: if($runner == "s", $y-coordinate, $x-coordinate);
+  @return $output;
+}
+
+//-- Based in the mathematical unit circle (radious of 1) used in trigonometry
+//-- The unit circle is the circle of radius one centered at the origin (0, 0)
+//-- in the Cartesian coordinate system
+
+//-- In this case is our radius of 1 equals 25vh
+
+.m-unit-circle {
+  height: $diameter;
+  width: $diameter;
+  @include absolute-centering;
+
+  &.f-area {
+    border-radius: 50%;
+    border: ($unit-points / 5) solid navajowhite;
+  }
+
+  //-- Cartesian coordinate 0,0
+  //-- which is the center of the circle --//
+
+  &:after {
+    content: "";
+    height: $unit-points;
+    width: $unit-points;
+    border-radius: 50%;
+    background-color: $circ-rgba-color;
+    z-index: 4;
+    @include absolute-centering;
+  }
+}
+
+.a-sin-cos {
+
+  &:before,
+  &:after {
+    content: "";
+    height: $unit-points;
+    width: $unit-points;
+    border-radius: ($unit-points / 2);
+    z-index: 2;
+  }
+
+  //-- Trigonometric functions --//
+  //-- The sine and cosine of an angle rare defined
+  //-- in the context of a right triangle:
+
+  //-- Sine --//
+  //-- In this case sine assist us define the
+  //-- Cartesian coordinates in the y axis of 90 and 270 deg --//
+  &:before {
+    background-color: $sin-rgba-color;
+    box-shadow: 0 0 3px $sin-rgba-color;
+    // transform: translateY(0);
+
+    -webkit-animation: sin 3s linear infinite alternate;
+    // @include absolute-centering;
+  }
+
+  //-- Cosine --//
+  //-- In this case sine assist us define the
+  //-- Cartesian coordinates in the y axis of 0 and 180 deg --//
+  &:after {
+    background-color: $cos-rgba-color;
+    box-shadow: 0 0 3px $cos-rgba-color;
+    transform: translateX(0);
+
+    -webkit-animation: cos 3s linear infinite alternate;
+    @include absolute-right-vertical ($radius);
+  }
+}
+
+.a-deg-radian-circle {
+  position: relative;
+  height: $diameter;
+  width: $diameter;
+  border-radius: 50%;
+  z-index: 2;
+  -webkit-animation: circ 4s linear infinite;
+
+  &:before {
+    content: "";
+    height: ($unit-points / 5);
+    width: $radius;
+    background-color: magenta;
+
+    @include absolute-right-vertical (($unit-points / 2));
+  }
+
+  &:after {
+    content: "";
+    height: $unit-points;
+    width: $unit-points;
+    border-radius: ($unit-points / 2);
+    background-color: magenta;
+    box-shadow: 0 0 3px magenta;
+    transform: translateX(50%);
+
+    @include absolute-right-vertical (0);
+  }
+}
+
+.a-angle-circle {
+  height: $circle-unit;
+  width: $circle-unit;
+  border: 1px solid $circ-rgba-color;
+  border-radius: 50%;
+  box-shadow: inset 100px 1px 10px $angle-rgba-color;
+
+  @include absolute-centering;
+}
+
+//-- Animations --//
+@-webkit-keyframes sin {
+  @for $i from 0 through $steps {
+    #{($i * 100%) / $steps} {
+      transform: translateY(angle-runner($i, $runner: "s"));
+    }
+  }
+}
+
+@-webkit-keyframes cos {
+  @for $i from 0 through $steps {
+    #{($i * 100%) / $steps} {
+      transform: translateX(angle-runner($i, $runner: "c"));
+    }
+  }
+}
+
+@-webkit-keyframes circ {
+  @for $i from 0 through $angle-step {
+    #{($i * 100%) / $angle-step} {
+      transform: rotate($i * -30deg);
+    }
+  }
+}
