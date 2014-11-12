@@ -82,10 +82,10 @@ $bezier: .21,.86,.83,.67;
   &:before {
     background-color: $sin-rgba-color;
     box-shadow: 0 0 3px $sin-rgba-color;
-    // transform: translateY(0);
+    transform: translateY(0);
 
-    -webkit-animation: sin 3s linear infinite alternate;
-    // @include absolute-centering;
+    -webkit-animation: sin 4s linear infinite alternate;
+    @include absolute-centering;
   }
 
   //-- Cosine --//
@@ -94,9 +94,9 @@ $bezier: .21,.86,.83,.67;
   &:after {
     background-color: $cos-rgba-color;
     box-shadow: 0 0 3px $cos-rgba-color;
-    transform: translateX(0);
+    transform: translateX($radius);
 
-    -webkit-animation: cos 3s linear infinite alternate;
+    -webkit-animation: cos 4s linear infinite alternate;
     @include absolute-right-vertical ($radius);
   }
 }
