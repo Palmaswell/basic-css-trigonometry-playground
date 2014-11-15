@@ -15,7 +15,7 @@ module.exports = {
     ]
   },
   styles: {
-    src: src + "/styles/app.scss",
+    src: src + "/styles/**",
     dest: dest
   },
   views: {

@@ -4,7 +4,7 @@ var handleErrors = require('../util/handleErrors');
 var config       = require('../config').styles;
 
 gulp.task('styles',  function () {
-  return gulp.src(config.src)
+  return gulp.src('src/styles/app.scss')
     .pipe(sass({
       compass: true,
       bundleExec: false,
